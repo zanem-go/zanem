@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portal de Novelas</title>
+    <style>
+        :root { --bg: #ffffff; --text: #1a1a1a; --card: #f0f0f0; }
+        .dark-mode { --bg: #121212; --text: #e0e0e0; --card: #1e1e1e; }
+
+        body { background-color: var(--bg); color: var(--text); font-family: 'Georgia', serif; transition: 0.3s; margin: 0; }
+        
+        /* Navegación */
+        nav { background: #2c3e50; padding: 15px; color: white; display: flex; justify-content: space-between; }
+        nav a { color: white; text-decoration: none; margin-right: 15px; font-weight: bold; }
+
+        /* Controles de lectura */
+        .controles { position: sticky; top: 0; background: var(--card); padding: 10px; display: flex; gap: 10px; justify-content: center; border-bottom: 1px solid #444; }
+        button { cursor: pointer; padding: 8px 12px; border: none; border-radius: 5px; background: #3498db; color: white; }
+
+        /* Contenido de la novela */
+        .lectura-container { max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+        #texto-novela { font-size: 18px; text-align: justify; }
+        
+        .etiqueta { background: #e74c3c; padding: 2px 8px; border-radius: 3px; font-size: 12px; vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div>
+        <a href="#">Inicio</a>
+        <a href="#">Biblioteca</a>
+    </div>
+    <span>Mi Novela Web 📖</span>
+</nav>
+
+<div class="controles">
+    <button onclick="cambiarModo()">🌓 Modo</button>
+    <button onclick="cambiarFuente('serif')">Serif</button>
+    <button onclick="cambiarFuente('sans-serif')">Sans</button>
+    <button onclick="ajustarTexto(2)">A+</button>
+    <button onclick="ajustarTexto(-2)">A-</button>
+</div>
+
+<div class="lectura-container">
+    <span class="etiqueta">Traducción</span>
+    <h1 id="titulo-novela">Capítulo 1: Un nuevo mundo</h1>
+    <hr>
+    <div id="texto-novela">
+        <p>—¿Dónde estoy? —susurró el joven mientras abría los ojos...</p>
+        <p>El viento soplaba entre los árboles de cristal. No era la ciudad que conocía. El sistema frente a sus ojos parpadeaba en un color azul neón.</p>
+        <p><strong>[Bienvenido, Usuario 001]</strong></p>
+        </div>
+</div>
+
+<script>
+    let tamano = 18;
+    function ajustarTexto(n) {
+        tamano += n;
+        document.getElementById('texto-novela').style.fontSize = tamano + "px";
+    }
+    function cambiarModo() {
+        document.body.classList.toggle('dark-mode');
+    }
+    function cambiarFuente(tipo) {
+        document.getElementById('texto-novela').style.fontFamily = tipo;
+    }
+</script>
+
+</body>
+</html>
