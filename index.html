@@ -3,68 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zanem</title>
+    <title>Za'nem</title>
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --card: #f0f0f0; }
-        .dark-mode { --bg: #121212; --text: #e0e0e0; --card: #1e1e1e; }
-
-        body { background-color: var(--bg); color: var(--text); font-family: 'Georgia', serif; transition: 0.3s; margin: 0; }
-        
-        /* Navegación */
-        nav { background: #2c3e50; padding: 15px; color: white; display: flex; justify-content: space-between; }
-        nav a { color: white; text-decoration: none; margin-right: 15px; font-weight: bold; }
-
-        /* Controles de lectura */
-        .controles { position: sticky; top: 0; background: var(--card); padding: 10px; display: flex; gap: 10px; justify-content: center; border-bottom: 1px solid #444; }
-        button { cursor: pointer; padding: 8px 12px; border: none; border-radius: 5px; background: #3498db; color: white; }
-
-        /* Contenido de la novela */
-        .lectura-container { max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; }
-        #texto-novela { font-size: 18px; text-align: justify; }
-        
-        .etiqueta { background: #e74c3c; padding: 2px 8px; border-radius: 3px; font-size: 12px; vertical-align: middle; }
+        :root { --bg: #ffffff; --text: #1a1a1a; --accent: #3498db; }
+        .dark-mode { --bg: #121212; --text: #e0e0e0; --accent: #2980b9; }
+        body { background: var(--bg); color: var(--text); font-family: 'Georgia', serif; margin: 0; transition: 0.3s; }
+        nav { background: #2c3e50; padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .controles { position: sticky; top: 0; background: var(--bg); padding: 10px; display: flex; gap: 8px; justify-content: center; border-bottom: 1px solid #444; z-index: 100; }
+        button, select { cursor: pointer; padding: 8px; border: none; border-radius: 5px; background: var(--accent); color: white; }
+        .lectura-container { max-width: 700px; margin: 20px auto; padding: 20px; line-height: 1.8; }
+        #contenido { font-size: 19px; white-space: pre-wrap; } /* Mantiene los saltos de línea del archivo txt */
     </style>
 </head>
 <body>
 
 <nav>
-    <div>
-        <a href="#">Inicio</a>
-        <a href="#">Biblioteca</a>
-    </div>
-    <span>Mi Novela Web 📖</span>
+    <span>Za'nem</span>
+    <select id="selector-capitulo" onchange="cargarCapitulo(this.value)">
+        <option value="">Selecciona un capítulo...</option>
+        <option value="capitulo-1.txt">Capítulo 1: El Inicio</option>
+        <option value="capitulo-2.txt">Capítulo 2: El Encuentro</option>
+    </select>
 </nav>
 
 <div class="controles">
-    <button onclick="cambiarModo()">🌓 Modo</button>
-    <button onclick="cambiarFuente('serif')">Serif</button>
-    <button onclick="cambiarFuente('sans-serif')">Sans</button>
+    <button onclick="document.body.classList.toggle('dark-mode')">🌓 Modo</button>
     <button onclick="ajustarTexto(2)">A+</button>
     <button onclick="ajustarTexto(-2)">A-</button>
 </div>
 
 <div class="lectura-container">
-    <span class="etiqueta">Traducción</span>
-    <h1 id="titulo-novela">Capítulo 1: Un nuevo mundo</h1>
-    <hr>
-    <div id="texto-novela">
-        <p>—¿Dónde estoy? —susurró el joven mientras abría los ojos...</p>
-        <p>El viento soplaba entre los árboles de cristal. No era la ciudad que conocía. El sistema frente a sus ojos parpadeaba en un color azul neón.</p>
-        <p><strong>[Bienvenido, Usuario 001]</strong></p>
-        </div>
+    <div id="contenido">Selecciona un capítulo en el menú de arriba para empezar a leer.</div>
 </div>
 
 <script>
-    let tamano = 18;
+    let tamano = 19;
+    
+    // Esta función va a buscar el archivo de texto a tu carpeta
+    async function cargarCapitulo(archivo) {
+        if (!archivo) return;
+        const contenedor = document.getElementById('contenido');
+        contenedor.innerHTML = "Cargando...";
+        
+        try {
+            const respuesta = await fetch(`novelas/${archivo}`);
+            const texto = await respuesta.text();
+            contenedor.innerText = texto;
+            window.scrollTo(0,0); // Sube al inicio al cambiar de capítulo
+        } catch (error) {
+            contenedor.innerText = "Error al cargar el capítulo. Verifica que el archivo exista.";
+        }
+    }
+
     function ajustarTexto(n) {
         tamano += n;
-        document.getElementById('texto-novela').style.fontSize = tamano + "px";
-    }
-    function cambiarModo() {
-        document.body.classList.toggle('dark-mode');
-    }
-    function cambiarFuente(tipo) {
-        document.getElementById('texto-novela').style.fontFamily = tipo;
+        document.getElementById('contenido').style.fontSize = tamano + "px";
     }
 </script>
 
